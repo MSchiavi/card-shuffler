@@ -45,6 +45,7 @@ async def hindu_shuffle(times: int = 1, history: bool = False):
 
 @r.get("/performance")
 async def performance_check(times: int = 1):
+    """ The closer to -1 indcates the "maximum" difference, +1 is exactly the same """
     fresh_deck = Deck()
     riffle_deck = Deck()
     overhand_deck = Deck()
@@ -56,6 +57,7 @@ async def performance_check(times: int = 1):
 
     return {"riffle_shuffle": riffle_deck.calculate_difference(fresh_deck.getUnMappedDeck()), 
             "over_hand_shuffle": overhand_deck.calculate_difference(fresh_deck.getUnMappedDeck()),
-            "hindu_shufle": hindu_deck.calculate_difference(fresh_deck.getUnMappedDeck())}
+            "hindu_shufle": hindu_deck.calculate_difference(fresh_deck.getUnMappedDeck()), 
+            "fresh_deck_sanity_check": fresh_deck.calculate_difference(fresh_deck.getUnMappedDeck())}
 
     
