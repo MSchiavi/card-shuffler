@@ -9,8 +9,12 @@
 # Q = Queen
 # J = Jack
 # A = Ace
+# Different shuffling techniques taken from https://www.wikihow.com/Shuffle-a-Deck-of-Playing-Cards
+import random
 class Deck:
     def __init__(self):
+        self.history = []
+
         self.card_mapping = {
         0: "AS",1: "2S",2: "3S",3: "4S",4: "5S",5: "6S",6: "7S",7: "8S",8: "9S",9: "10S",10: "JS",11: "QS",
         12: "KS",13: "AD",14: "2D",15: "3D",16: "4D",17: "5D",18: "6D",19: "7D",20: "8D",21: "9D",22: "10D",23: "JD",
@@ -31,3 +35,33 @@ class Deck:
 
     def getMappedDeck(self):
         return [self.card_mapping[x] for x in self.deck]
+
+    def shuffle_bridge(self, times: int = 1):
+        for j in range(0,times):
+            deck = self.deck.copy()
+            first_half = deck[0:len(deck)//2][::-1]
+            second_half = deck[len(deck)//2::][::-1]
+            new_deck = []
+            for i in range(len(first_half)):
+                new_deck.append(first_half[i])
+                new_deck.append(second_half[i])
+            self.deck = new_deck.copy()
+            self.history.append([self.card_mapping[x] for x in self.deck])
+
+    def get_shuffle_history(self):
+        return self.history
+        
+    def shuffle_overhand(self, times: int = 1):
+        for j in range(0,times):
+            deck = self.deck.copy()
+            start = random.randrange(13,23)
+            stop = random.randrange(27,37)
+            third = deck[start:stop]
+            new_deck = deck[0:start]
+            new_deck.extend(deck[stop::])
+            new_deck =  third + new_deck
+            self.deck = new_deck.copy()
+            self.history.append([self.card_mapping[x] for x in self.deck])
+            
+
+
