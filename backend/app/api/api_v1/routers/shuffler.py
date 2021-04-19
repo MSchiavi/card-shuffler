@@ -7,10 +7,10 @@ shuffler_router = r = APIRouter()
 async def hello_shuffler():
     return {"message":"Hello Shuffler"}
 
-@r.get("/bridge")
-async def bridge_shuffle(times: int = 1, history: bool = False):
+@r.get("/riffle")
+async def riffle_shuffle(times: int = 1, history: bool = False):
     deck = Deck()
-    deck.shuffle_bridge(times)
+    deck.shuffle_riffle(times)
     
     if(times >= 25 and history):
         raise HTTPException(status_code=403,detail="Preventing too many shuffles, for your own safety. You can shuffle this many times but please turn of history")
@@ -42,3 +42,22 @@ async def hindu_shuffle(times: int = 1, history: bool = False):
         return {"deck": deck.getMappedDeck(), "shuffleHistory": deck.get_shuffle_history()}
     else:
         return {"deck": deck.getMappedDeck()}
+
+@r.get("/performance")
+async def performance_check(times: int = 1):
+    """ The closer to -1 indcates the "maximum" difference, +1 is exactly the same """
+    fresh_deck = Deck()
+    riffle_deck = Deck()
+    overhand_deck = Deck()
+    hindu_deck = Deck()
+
+    riffle_deck.shuffle_riffle(times)
+    overhand_deck.shuffle_overhand(times)
+    hindu_deck.shuffle_hindu(times)
+
+    return {"riffle_shuffle": riffle_deck.calculate_difference(fresh_deck.getUnMappedDeck()), 
+            "over_hand_shuffle": overhand_deck.calculate_difference(fresh_deck.getUnMappedDeck()),
+            "hindu_shufle": hindu_deck.calculate_difference(fresh_deck.getUnMappedDeck()), 
+            "fresh_deck_sanity_check": fresh_deck.calculate_difference(fresh_deck.getUnMappedDeck())}
+
+    
