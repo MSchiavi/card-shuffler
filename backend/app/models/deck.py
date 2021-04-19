@@ -11,6 +11,7 @@
 # A = Ace
 # Different shuffling techniques taken from https://www.wikihow.com/Shuffle-a-Deck-of-Playing-Cards
 import random
+from utils.spearmans import Spearman
 class Deck:
     def __init__(self):
         self.history = []
@@ -36,10 +37,14 @@ class Deck:
     def getMappedDeck(self):
         return [self.card_mapping[x] for x in self.deck]
     
+    def getUnMappedDeck(self):
+        return self.deck
+
     def get_shuffle_history(self):
         return self.history
 
-    def shuffle_bridge(self, times: int = 1):
+    def shuffle_riffle(self, times: int = 1):
+        """ This i an implementation of a "perfect" riffle """
         for j in range(0,times):
             deck = self.deck.copy()
             first_half = deck[0:len(deck)//2][::-1]
@@ -77,5 +82,9 @@ class Deck:
             self.history.append([self.card_mapping[x] for x in self.deck])
 
 
+    def calculate_difference(self,a: list):
+        spearman = Spearman()
+
+        return spearman.calculate(a,self.getUnMappedDeck())
 
 
