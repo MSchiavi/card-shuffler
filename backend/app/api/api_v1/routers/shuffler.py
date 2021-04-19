@@ -31,3 +31,14 @@ async def overhand_shuffle(times: int = 1, history: bool = False):
     else:
         return {"deck": deck.getMappedDeck()}
 
+@r.get("/hindu")
+async def hindu_shuffle(times: int = 1, history: bool = False):
+    deck = Deck()
+    deck.shuffle_hindu(times)
+    
+    if(times >= 25 and history):
+        raise HTTPException(status_code=403,detail="Preventing too many shuffles, for your own safety. You can shuffle this many times but please turn of history")
+    if(history):
+        return {"deck": deck.getMappedDeck(), "shuffleHistory": deck.get_shuffle_history()}
+    else:
+        return {"deck": deck.getMappedDeck()}

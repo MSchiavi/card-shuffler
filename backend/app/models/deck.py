@@ -35,6 +35,9 @@ class Deck:
 
     def getMappedDeck(self):
         return [self.card_mapping[x] for x in self.deck]
+    
+    def get_shuffle_history(self):
+        return self.history
 
     def shuffle_bridge(self, times: int = 1):
         for j in range(0,times):
@@ -48,8 +51,7 @@ class Deck:
             self.deck = new_deck.copy()
             self.history.append([self.card_mapping[x] for x in self.deck])
 
-    def get_shuffle_history(self):
-        return self.history
+
         
     def shuffle_overhand(self, times: int = 1):
         for j in range(0,times):
@@ -62,6 +64,18 @@ class Deck:
             new_deck =  third + new_deck
             self.deck = new_deck.copy()
             self.history.append([self.card_mapping[x] for x in self.deck])
-            
+
+    def shuffle_hindu(self,times: int = 1):
+        for j in range(0,times):
+            deck = self.deck.copy()
+            new_deck = []
+            while deck:
+                stop = random.randrange(5,10)
+                new_deck = deck[0:stop] + new_deck
+                deck = deck[stop::]
+            self.deck = new_deck.copy()
+            self.history.append([self.card_mapping[x] for x in self.deck])
+
+
 
 
